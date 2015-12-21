@@ -51,6 +51,14 @@ public class Order extends AbstractEntity {
         return status;
     }
 
+    public double getPrice(){
+        double totalPrice =0;
+        for (OrderRow row : orderRowList) {
+            totalPrice += row.getPrice();
+        }
+        return totalPrice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -17,4 +17,6 @@ public interface OrderRepository extends CrudRepository<Order> {
 
 
     Collection<Order> findOrdersByStatus(String status);
+
+    Collection<Order> findByMinimumPrice(double price);
 }

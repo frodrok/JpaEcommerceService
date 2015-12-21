@@ -68,4 +68,8 @@ public final class ECommerceService {
     public List<Order> findOrdersByStatus(String status) {
         return new ArrayList<>(orderRepo.findOrdersByStatus(status));
     }
+
+    public List<Order> findOrdersByMinimumPrice(double price) {
+        return new ArrayList<>(orderRepo.findByMinimumPrice(price));
+    }
 }

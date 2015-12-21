@@ -105,4 +105,22 @@ public class ECommerceOrderTest {
 
         assertThat(service.findOrdersByStatus(order.getStatus()), contains(order));
     }
+
+    @Test
+    public void ordersShouldBeRetrievableByMinimumPrice(){
+        double price = 100;
+        service.addOrder(order);
+
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+        verify(orderRepositoryMock).saveOrUpdate(order);
+
+        when(orderRepositoryMock.findByMinimumPrice(price)).thenReturn(orders);
+
+        assertThat(service.findOrdersByMinimumPrice(price), contains(order));
+
+        verify(orderRepositoryMock, times(1)).findByMinimumPrice(price);
+
+
+    }
 }
