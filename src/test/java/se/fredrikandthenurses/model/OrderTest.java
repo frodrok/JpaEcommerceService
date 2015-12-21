@@ -34,6 +34,29 @@ public class OrderTest {
         assertEquals(order, order2);
     }
 
+    @Test
+    public  void equalOrdersShouldHaveSameHashCode(){
+
+        User user = new User("Joanne", "123");
+        Product product = new Product("1002", "corona", 10.00);
+        OrderRow row = new OrderRow(product, 200);
+        List<OrderRow> orderRows = new ArrayList<>();
+        orderRows.add(row);
+        Order order = new Order("102", user, orderRows);
+
+        User user2 = new User("Joanne", "123");
+        Product product2 = new Product("1002", "corona", 10.00);
+        OrderRow row2 = new OrderRow(product2, 200);
+        List<OrderRow> orderRows2 = new ArrayList<>();
+        orderRows2.add(row2);
+        Order order2 = new Order("102", user2, orderRows2);
+
+        assertEquals(order, order2);
+        assertEquals(order.hashCode(), order2.hashCode());
+
+
+    }
+
 
 
 }
