@@ -14,7 +14,11 @@ import se.fredrikandthenurses.repository.OrderRepository;
 import se.fredrikandthenurses.repository.ProductRepository;
 import se.fredrikandthenurses.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,6 +82,20 @@ public class ECommerceProductTest {
         verify(productRepositoryMock, times(1)).saveOrUpdate(product);
         verify(productRepositoryMock, times(1)).findByProductName(product.getProductName());
 
+    }
+
+    @Test
+    public void addedProductShouldBeInGetAllList() {
+
+        service.addProduct(product);
+
+        List<Product> productList = new ArrayList<>();
+        when(productRepositoryMock.getAll()).thenReturn(productList);
+
+        assertThat(service.getAllProducts(), contains(product));
+
+        verify(productRepositoryMock, times(1)).getAll();
+        verify(productRepositoryMock, times(1)).saveOrUpdate(product);
     }
 
 

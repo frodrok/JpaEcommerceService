@@ -2,6 +2,9 @@ package se.fredrikandthenurses.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 @Entity
 public class User extends AbstractEntity {
@@ -13,12 +16,15 @@ public class User extends AbstractEntity {
     @Column
     private boolean active;
 
+    private Collection<Order> orderList;
+
     protected User() {}
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.active = true;
+        orderList = new HashSet<>();
     }
 
     public String getUsername() {
@@ -33,6 +39,14 @@ public class User extends AbstractEntity {
         this.active = active;
     }
 
+    public Collection<Order> getOrderList() {
+        return orderList;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,6 +58,11 @@ public class User extends AbstractEntity {
         if (username != null ? !username.equals(user.username) : user.username != null) return false;
         return password != null ? password.equals(user.password) : user.password == null;
 
+    }
+
+    public User addOrder(Order order) {
+        orderList.add(order);
+        return this;
     }
 
     @Override
