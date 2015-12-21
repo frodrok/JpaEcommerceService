@@ -8,6 +8,7 @@ public class Product extends AbstractEntity {
     private String productNumber;
     private String productName;
     private Double productPrice;
+    private boolean available;
 
     protected Product() {}
 
@@ -15,6 +16,15 @@ public class Product extends AbstractEntity {
         this.productNumber = productNumber;
         this.productName = productName;
         this.productPrice = productPrice;
+        this.available = true;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public String getProductNumber() {
@@ -36,19 +46,20 @@ public class Product extends AbstractEntity {
 
         Product product = (Product) o;
 
-        if (getProductNumber() != null ? !getProductNumber().equals(product.getProductNumber()) : product.getProductNumber() != null)
+        if (available != product.available) return false;
+        if (productNumber != null ? !productNumber.equals(product.productNumber) : product.productNumber != null)
             return false;
-        if (getProductName() != null ? !getProductName().equals(product.getProductName()) : product.getProductName() != null)
-            return false;
-        return !(getProductPrice() != null ? !getProductPrice().equals(product.getProductPrice()) : product.getProductPrice() != null);
+        if (productName != null ? !productName.equals(product.productName) : product.productName != null) return false;
+        return productPrice != null ? productPrice.equals(product.productPrice) : product.productPrice == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = getProductNumber() != null ? getProductNumber().hashCode() : 0;
-        result = 31 * result + (getProductName() != null ? getProductName().hashCode() : 0);
-        result = 31 * result + (getProductPrice() != null ? getProductPrice().hashCode() : 0);
+        int result = productNumber != null ? productNumber.hashCode() : 0;
+        result = 31 * result + (productName != null ? productName.hashCode() : 0);
+        result = 31 * result + (productPrice != null ? productPrice.hashCode() : 0);
+        result = 31 * result + (available ? 1 : 0);
         return result;
     }
 
@@ -58,6 +69,7 @@ public class Product extends AbstractEntity {
                 "productNumber='" + productNumber + '\'' +
                 ", productName='" + productName + '\'' +
                 ", productPrice=" + productPrice +
+                ", available=" + available +
                 '}';
     }
 }

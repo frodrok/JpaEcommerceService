@@ -1,6 +1,7 @@
 package se.fredrikandthenurses.service;
 
 import se.fredrikandthenurses.model.Product;
+import se.fredrikandthenurses.model.User;
 import se.fredrikandthenurses.repository.OrderRepository;
 import se.fredrikandthenurses.repository.ProductRepository;
 import se.fredrikandthenurses.repository.UserRepository;
@@ -23,11 +24,20 @@ public final class ECommerceService {
     }
 
 
-    public void addProduct(Product product) {
-        productRepo.saveOrUpdate(product);
+    public Product addProduct(Product product) {
+        return productRepo.saveOrUpdate(product);
     }
 
     public Product findByProductNumber(String productNumber) {
         return productRepo.findByProductNumber(productNumber);
+    }
+
+    public Product findByProductName(String productName) {
+        return productRepo.findByProductName(productName);
+    }
+
+    public User addUser(User user) {
+        return userRepo.saveOrUpdate(user);
+
     }
 }

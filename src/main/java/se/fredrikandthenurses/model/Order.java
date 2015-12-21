@@ -11,7 +11,7 @@ public class Order extends AbstractEntity {
     private List<OrderRow> orderRowList;
 
     private String orderNumber;
-    private boolean active;
+    private String status;
 
     protected Order() {
     }
@@ -20,7 +20,7 @@ public class Order extends AbstractEntity {
         this.user = user;
         this.orderRowList = orderRowList;
         this.orderNumber = orderNumber;
-        this.active = true;
+        this.status = "placed";
     }
 
     public User getUser() {
@@ -35,8 +35,20 @@ public class Order extends AbstractEntity {
         return orderNumber;
     }
 
-    public boolean isActive() {
-        return active;
+    public void setStatusShipped(){
+        this.status = "shipped";
+    }
+
+    public void setStatusPaid(){
+        this.status = "paid";
+    }
+
+    public void setStatusCanceled(){
+        this.status = "canceled";
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     @Override
@@ -46,30 +58,29 @@ public class Order extends AbstractEntity {
 
         Order order = (Order) o;
 
-        if (isActive() != order.isActive()) return false;
-        if (getUser() != null ? !getUser().equals(order.getUser()) : order.getUser() != null) return false;
-        if (getOrderRowList() != null ? !getOrderRowList().equals(order.getOrderRowList()) : order.getOrderRowList() != null)
-            return false;
-        return !(getOrderNumber() != null ? !getOrderNumber().equals(order.getOrderNumber()) : order.getOrderNumber() != null);
+        if (user != null ? !user.equals(order.user) : order.user != null) return false;
+        if (orderRowList != null ? !orderRowList.equals(order.orderRowList) : order.orderRowList != null) return false;
+        if (orderNumber != null ? !orderNumber.equals(order.orderNumber) : order.orderNumber != null) return false;
+        return status != null ? status.equals(order.status) : order.status == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = getUser() != null ? getUser().hashCode() : 0;
-        result = 31 * result + (getOrderRowList() != null ? getOrderRowList().hashCode() : 0);
-        result = 31 * result + (getOrderNumber() != null ? getOrderNumber().hashCode() : 0);
-        result = 31 * result + (isActive() ? 1 : 0);
+        int result = user != null ? user.hashCode() : 0;
+        result = 31 * result + (orderRowList != null ? orderRowList.hashCode() : 0);
+        result = 31 * result + (orderNumber != null ? orderNumber.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + getId() +
+        return "Order{" +
                 "user=" + user +
                 ", orderRowList=" + orderRowList +
                 ", orderNumber='" + orderNumber + '\'' +
-                ", active=" + active +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

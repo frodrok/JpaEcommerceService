@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
  * Created by joanne on 21/12/15.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ECommerceServiceTest {
+public class ECommerceProductTest {
 
     @Rule
     public ExpectedException exception= ExpectedException.none();
@@ -49,7 +49,7 @@ public class ECommerceServiceTest {
     }
 
     @Test
-    public void productShouldBeAdded(){
+    public void productShouldBeAddedOrUpdated(){
         service.addProduct(product);
         verify(productRepositoryMock, times(1)).saveOrUpdate(product);
     }
@@ -66,6 +66,19 @@ public class ECommerceServiceTest {
         verify(productRepositoryMock, times(1)).findByProductNumber(product.getProductNumber());
     }
 
+    @Test
+    public void productShouldBeRetrievableByProductName(){
+
+        service.addProduct(product);
+
+        when(productRepositoryMock.findByProductName(product.getProductName())).thenReturn(product);
+
+        assertThat(service.findByProductName(product.getProductName()), equalTo(product));
+
+        verify(productRepositoryMock, times(1)).saveOrUpdate(product);
+        verify(productRepositoryMock, times(1)).findByProductName(product.getProductName());
+
+    }
 
 
 
