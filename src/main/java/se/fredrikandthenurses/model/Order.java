@@ -1,9 +1,8 @@
 package se.fredrikandthenurses.model;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import java.util.List;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @NamedQueries(value = {
@@ -11,9 +10,12 @@ import java.util.List;
 })
 public class Order extends AbstractEntity {
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+
     private User user;
 
-    private List<OrderRow> orderRowList;
+    @OneToMany(mappedBy = "order")
+    private Collection<OrderRow> orderRowList;
 
     private String orderNumber;
     private String status;
@@ -23,9 +25,9 @@ public class Order extends AbstractEntity {
     protected Order() {
     }
 
-    public Order(String orderNumber, User user, List<OrderRow> orderRowList) {
+    public Order(String orderNumber, User user) {
         this.user = user;
-        this.orderRowList = orderRowList;
+        this.orderRowList = new ArrayList<>();
         this.orderNumber = orderNumber;
         orderStatus = OrderStatus.PLACED;
     }
@@ -34,7 +36,7 @@ public class Order extends AbstractEntity {
         return user;
     }
 
-    public List<OrderRow> getOrderRowList() {
+    public Collection<OrderRow> getOrderRowList() {
         return orderRowList;
     }
 

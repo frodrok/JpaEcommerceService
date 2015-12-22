@@ -1,12 +1,14 @@
 package se.fredrikandthenurses.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
 @Entity
+@NamedQueries(value ={
+        @NamedQuery(name = "User.FindByUsername", query = "SELECT u FROM User u WHERE u.username = :username")})
+
 public class User extends AbstractEntity {
 
     @Column(nullable = false)
@@ -15,6 +17,9 @@ public class User extends AbstractEntity {
     private String password;
     @Column
     private boolean active;
+
+    @OneToMany(mappedBy = "user")
+
 
     private Collection<Order> orderList;
 

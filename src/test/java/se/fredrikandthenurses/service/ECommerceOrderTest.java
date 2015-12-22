@@ -57,7 +57,7 @@ public class ECommerceOrderTest {
         orderRow = new OrderRow(product, 100);
         orderRowList = new ArrayList<>();
         orderRowList.add(orderRow);
-        order = new Order("1001", user, orderRowList);
+        order = new Order("1001", user);
     }
 
     @Test

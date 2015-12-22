@@ -6,8 +6,8 @@ import javax.persistence.EntityManagerFactory;
 
 public class JpaProductRepository extends AbstractJpaRepository<Product> implements ProductRepository {
 
-    public JpaProductRepository(EntityManagerFactory emf, Class<Product> entityClass) {
-        super(emf, entityClass);
+    public JpaProductRepository(EntityManagerFactory emf) {
+        super(emf, Product.class);
     }
 
     @Override

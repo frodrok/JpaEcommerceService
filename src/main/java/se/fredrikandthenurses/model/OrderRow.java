@@ -1,12 +1,16 @@
 package se.fredrikandthenurses.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class OrderRow extends AbstractEntity {
 
     private Product product;
     private Integer amount;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Order order;
 
     public OrderRow(Product product, Integer amount) {
         this.product = product;
