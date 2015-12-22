@@ -1,10 +1,10 @@
 package se.fredrikandthenurses.repository;
 
+import se.fredrikandthenurses.model.OrderStatus;
 import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.User;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.criteria.Order;
 import java.util.Collection;
 
 /**
@@ -27,13 +27,14 @@ public class JpaOrderRepository extends AbstractJpaRepository<PersistableOrder> 
     }
 
     @Override
-    public Collection<PersistableOrder> findOrdersByStatus(String status) {
-        return null;
+    public Collection<PersistableOrder> findOrdersByStatus(OrderStatus status) {
+        return queryForList("PersistableOrder.FindByStatus", status);
     }
 
     @Override
-    public Collection<PersistableOrder> findByMinimumPrice(double price) {
-        return null;
+    public Collection<PersistableOrder> findByMinimumPrice(Double price) {
+        return queryForList("PersistableOrder.FindByMinimumPrice", price);
+
     }
 
 

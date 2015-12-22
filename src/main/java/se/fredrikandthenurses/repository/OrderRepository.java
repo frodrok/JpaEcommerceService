@@ -1,5 +1,6 @@
 package se.fredrikandthenurses.repository;
 
+import se.fredrikandthenurses.model.OrderStatus;
 import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.User;
 
@@ -14,7 +15,7 @@ public interface OrderRepository extends CrudRepository<PersistableOrder> {
 
     Collection<PersistableOrder> findByUser(User user);
 
-    Collection<PersistableOrder> findOrdersByStatus(String status);
+    Collection<PersistableOrder> findOrdersByStatus(OrderStatus status);
 
-    Collection<PersistableOrder> findByMinimumPrice(double price);
+    Collection<PersistableOrder> findByMinimumPrice(Double price);
 }

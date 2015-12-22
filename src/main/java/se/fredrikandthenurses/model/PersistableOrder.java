@@ -8,7 +8,9 @@ import java.util.Collection;
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "PersistableOrder.FindByUser", query = "SELECT p FROM PersistableOrder p WHERE p.user.id = ?1"),
-        @NamedQuery(name = "PersistableOrder.FindByOrderNumber", query = "SELECT p FROM PersistableOrder p WHERE p.orderNumber = ?1")
+        @NamedQuery(name = "PersistableOrder.FindByOrderNumber", query = "SELECT p FROM PersistableOrder p Join Fetch p.orderRowList WHERE p.orderNumber = ?1"),
+        @NamedQuery(name = "PersistableOrder.FindByStatus", query = "SELECT p FROM PersistableOrder p Join Fetch p.orderRowList WHERE p.orderStatus = ?1"),
+        @NamedQuery(name = "PersistableOrder.FindByMinimumPrice", query= "SELECT p FROM PersistableOrder p JOIN FETCH p.orderRowList where p.price > ?1 ")
 })
 public class PersistableOrder extends AbstractEntity {
 
@@ -20,6 +22,8 @@ public class PersistableOrder extends AbstractEntity {
 
     private String orderNumber;
 
+    private Double price;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
@@ -30,6 +34,7 @@ public class PersistableOrder extends AbstractEntity {
         this.user = user;
         this.orderRowList = new ArrayList<>();
         this.orderNumber = orderNumber;
+        this.price = 0.0;
         orderStatus = OrderStatus.PLACED;
     }
 
@@ -71,6 +76,7 @@ public class PersistableOrder extends AbstractEntity {
 
     public PersistableOrder addOrderRow(OrderRow row){
         this.orderRowList.add(row);
+        this.price += row.getPrice();
         return this;
     }
 

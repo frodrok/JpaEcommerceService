@@ -39,11 +39,14 @@ public class JpaOrderRepositoryTest {
         user = new User("joanne", "123");
         persistableOrder = new PersistableOrder("123", user);
         persistableOrder.addOrderRow(orderRow);
+        orderRow.addOrder(persistableOrder);
 
     }
 
     @Test
     public void testFindByOrderNumber() throws Exception {
+        orderRepository.saveOrUpdate(persistableOrder);
+        orderRepository.findByOrderNumber("123").getOrderRowList().forEach(orderRow1 -> System.out.println(orderRow1.getPrice()));
     }
 
     @Test
@@ -58,25 +61,24 @@ public class JpaOrderRepositoryTest {
     @Test
     public void testFindByUser() throws Exception {
 
+        orderRepository.saveOrUpdate(persistableOrder);
+        orderRepository.findByUser(user);
+        orderRepository.findByUser(user).forEach(order -> System.out.println(order.getUser().getUsername()));
     }
 
     @Test
     public void testFindOrdersByStatus() throws Exception {
+        orderRepository.saveOrUpdate(persistableOrder);
+        orderRepository.findOrdersByStatus(persistableOrder.getStatus()).forEach(order -> System.out.println(order.getStatus().toString()));
 
-    }
+}
 
     @Test
     public void testFindByMinimumPrice() throws Exception {
 
-    }
-
-    @Test
-    public void testSaveOrUpdate() throws Exception {
+        orderRepository.saveOrUpdate(persistableOrder);
+        orderRepository.findByMinimumPrice(101.00).forEach(order -> System.out.println(order.getPrice()));
 
     }
 
-    @Test
-    public void testRemove() throws Exception {
-
-    }
 }

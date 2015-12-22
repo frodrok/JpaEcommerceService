@@ -18,6 +18,7 @@ public class JpaUserRepositoryTest {
     private UserRepository userRepo;
     private User user;
     private EntityManagerFactory factory;
+
     @Before
     public void setup(){
         factory= Persistence.createEntityManagerFactory("lokaldatabas");

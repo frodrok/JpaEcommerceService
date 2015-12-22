@@ -1,5 +1,6 @@
 package se.fredrikandthenurses.service;
 
+import se.fredrikandthenurses.model.OrderStatus;
 import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.Product;
 import se.fredrikandthenurses.model.User;
@@ -65,7 +66,7 @@ public final class ECommerceService {
         return new ArrayList<>(orderRepo.findByUser(user));
     }
 
-    public List<PersistableOrder> findOrdersByStatus(String status) {
+    public List<PersistableOrder> findOrdersByStatus(OrderStatus status) {
         return new ArrayList<>(orderRepo.findOrdersByStatus(status));
     }
 

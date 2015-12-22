@@ -101,9 +101,9 @@ public class ECommerceOrderTest {
         List<PersistableOrder> shippedPersistableOrders = new ArrayList<>();
         shippedPersistableOrders.add(persistableOrder);
 
-        when(orderRepositoryMock.findOrdersByStatus(persistableOrder.getStatus().toString())).thenReturn(shippedPersistableOrders);
+        when(orderRepositoryMock.findOrdersByStatus(persistableOrder.getStatus())).thenReturn(shippedPersistableOrders);
 
-        assertThat(service.findOrdersByStatus(persistableOrder.getStatus().toString()), contains(persistableOrder));
+        assertThat(service.findOrdersByStatus(persistableOrder.getStatus()), contains(persistableOrder));
     }
 
     @Test
