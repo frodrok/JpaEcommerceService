@@ -1,9 +1,14 @@
 package se.fredrikandthenurses.model;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import java.util.List;
 
 @Entity
+@NamedQueries(value = {
+        @NamedQuery(name = "Order.GetAll", query = "SELECT o FROM Order o")
+})
 public class Order extends AbstractEntity {
 
     private User user;
@@ -13,6 +18,8 @@ public class Order extends AbstractEntity {
     private String orderNumber;
     private String status;
 
+    private OrderStatus orderStatus;
+
     protected Order() {
     }
 
@@ -20,7 +27,7 @@ public class Order extends AbstractEntity {
         this.user = user;
         this.orderRowList = orderRowList;
         this.orderNumber = orderNumber;
-        this.status = "placed";
+        orderStatus = OrderStatus.PLACED;
     }
 
     public User getUser() {
@@ -36,15 +43,15 @@ public class Order extends AbstractEntity {
     }
 
     public void setStatusShipped(){
-        this.status = "shipped";
+        orderStatus = OrderStatus.SHIPPED;
     }
 
     public void setStatusPaid(){
-        this.status = "paid";
+        orderStatus = OrderStatus.PAID;
     }
 
     public void setStatusCanceled(){
-        this.status = "canceled";
+        orderStatus = OrderStatus.CANCELLED;
     }
 
     public String getStatus() {

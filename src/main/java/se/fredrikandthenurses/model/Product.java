@@ -1,8 +1,14 @@
 package se.fredrikandthenurses.model;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQueries(value = {
+        @NamedQuery(name = "Product.FindByProductNumber", query = "SELECT p from Product p where p.productNumber = :productNumber"),
+        @NamedQuery(name = "Product.FindByProductName", query = "SELECT p from Product p where p.productName = :productName")
+        })
 public class Product extends AbstractEntity {
 
     private String productNumber;
