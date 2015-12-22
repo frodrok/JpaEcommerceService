@@ -7,20 +7,20 @@ import java.util.Collection;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "PersistableOrder.FindByUser", query = "SELECT o FROM PersistableOrder o WHERE o.user.id = ?1"),
-        @NamedQuery(name = "PersistableOrder.FindByOrderNumber", query = "SELECT o FROM PersistableOrder o WHERE o.orderNumber = ?1")
+        @NamedQuery(name = "PersistableOrder.FindByUser", query = "SELECT p FROM PersistableOrder p WHERE p.user.id = ?1"),
+        @NamedQuery(name = "PersistableOrder.FindByOrderNumber", query = "SELECT p FROM PersistableOrder p WHERE p.orderNumber = ?1")
 })
 public class PersistableOrder extends AbstractEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
 
-    @OneToMany(mappedBy = "persistableOrder")
+    @OneToMany(mappedBy = "persistableOrder", cascade = CascadeType.PERSIST)
     private Collection<OrderRow> orderRowList;
 
     private String orderNumber;
-    private String status;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     protected PersistableOrder() {
@@ -45,6 +45,10 @@ public class PersistableOrder extends AbstractEntity {
         return orderNumber;
     }
 
+    public OrderStatus getStatus() {
+        return orderStatus;
+    }
+
     public void setStatusShipped(){
         orderStatus = OrderStatus.SHIPPED;
     }
@@ -55,10 +59,6 @@ public class PersistableOrder extends AbstractEntity {
 
     public void setStatusCanceled(){
         orderStatus = OrderStatus.CANCELLED;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public double getPrice(){
@@ -74,36 +74,31 @@ public class PersistableOrder extends AbstractEntity {
         return this;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PersistableOrder persistableOrder = (PersistableOrder) o;
+        PersistableOrder that = (PersistableOrder) o;
 
-        if (user != null ? !user.equals(persistableOrder.user) : persistableOrder.user != null) return false;
-        if (orderRowList != null ? !orderRowList.equals(persistableOrder.orderRowList) : persistableOrder.orderRowList != null) return false;
-        if (orderNumber != null ? !orderNumber.equals(persistableOrder.orderNumber) : persistableOrder.orderNumber != null) return false;
-        return status != null ? status.equals(persistableOrder.status) : persistableOrder.status == null;
+        return !(getOrderNumber() != null ? !getOrderNumber().equals(that.getOrderNumber()) : that.getOrderNumber() != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = user != null ? user.hashCode() : 0;
-        result = 31 * result + (orderRowList != null ? orderRowList.hashCode() : 0);
-        result = 31 * result + (orderNumber != null ? orderNumber.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        return result;
+        return getOrderNumber() != null ? getOrderNumber().hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "PersistableOrder{" + getId() +
+        return "PersistableOrder{" + "id=" + getId() + ", " +
                 "user=" + user +
                 ", orderRowList=" + orderRowList +
                 ", orderNumber='" + orderNumber + '\'' +
-                ", status='" + status + '\'' +
+                ", orderStatus=" + orderStatus +
                 '}';
     }
 }

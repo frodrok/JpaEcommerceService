@@ -36,13 +36,5 @@ public class JpaOrderRepository extends AbstractJpaRepository<PersistableOrder> 
         return null;
     }
 
-    @Override
-    public PersistableOrder saveOrUpdate(PersistableOrder entity) {
-        return null;
-    }
 
-    @Override
-    public PersistableOrder remove(PersistableOrder entity) {
-        return null;
-    }
 }

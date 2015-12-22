@@ -1,6 +1,7 @@
 package se.fredrikandthenurses.model;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Order;
 
 @Entity
 public class OrderRow extends AbstractEntity {
@@ -8,7 +9,9 @@ public class OrderRow extends AbstractEntity {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name= "productId")
     private Product product;
+
     private Integer amount;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private PersistableOrder persistableOrder;
 
@@ -41,4 +44,22 @@ public class OrderRow extends AbstractEntity {
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "OrderRow{" +
+                "product=" + product +
+                ", amount=" + amount +
+                ", persistableOrder=" + persistableOrder +
+                '}';
+    }
+
+    public OrderRow addOrder(PersistableOrder order) {
+        this.persistableOrder = order;
+        return this;
+    }
+    /* public OrderRow addOrder(TestNewOrder order) {
+        this.persistableOrder = order;
+        return this;
+    } */
 }
