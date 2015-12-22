@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractJpaRepository<E extends AbstractEntity> implements CrudRepository<E> {
 
@@ -89,13 +90,26 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         return entityList;
     }
 
-    public TypedQuery<E> query(String queryName) {
-        return manager.createNamedQuery(queryName, entityClass);
+    public E query(String queryName, Object ...parameters) {
+        manager = factory.createEntityManager();
+        TypedQuery<E> query = manager.createNamedQuery(queryName, entityClass);
+        for (int i = 0; i < parameters.length ; i++) {
+            query.setParameter(i+1, parameters[i]);
+        }
+        E entityToReturn = query.getSingleResult();
+        manager.close();
+        return entityToReturn;
     }
 
-    public List<E> queryForList(String queryName) {
+    public List<E> queryForList(String queryName, Object ...parameters) {
+        manager = factory.createEntityManager();
         TypedQuery<E> query = manager.createNamedQuery(queryName, entityClass);
-        return query.getResultList();
+        for (int i = 0; i < parameters.length; i++) {
+            query.setParameter(i+1, parameters[i]);
+        }
+        List<E> entityList =  query.getResultList();
+        manager.close();
+        return entityList;
     }
 
 

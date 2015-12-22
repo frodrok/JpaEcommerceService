@@ -1,6 +1,6 @@
 package se.fredrikandthenurses.service;
 
-import se.fredrikandthenurses.model.Order;
+import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.Product;
 import se.fredrikandthenurses.model.User;
 import se.fredrikandthenurses.repository.OrderRepository;
@@ -53,23 +53,23 @@ public final class ECommerceService {
         return productRepo.getAll();
     }
 
-    public Order addOrder(Order order) {
-        return orderRepo.saveOrUpdate(order);
+    public PersistableOrder addOrder(PersistableOrder persistableOrder) {
+        return orderRepo.saveOrUpdate(persistableOrder);
     }
 
-    public List<Order> getAllOrders() {
+    public List<PersistableOrder> getAllOrders() {
         return orderRepo.getAll();
     }
 
-    public List<Order> findOrdersByUser(User user) {
+    public List<PersistableOrder> findOrdersByUser(User user) {
         return new ArrayList<>(orderRepo.findByUser(user));
     }
 
-    public List<Order> findOrdersByStatus(String status) {
+    public List<PersistableOrder> findOrdersByStatus(String status) {
         return new ArrayList<>(orderRepo.findOrdersByStatus(status));
     }
 
-    public List<Order> findOrdersByMinimumPrice(double price) {
+    public List<PersistableOrder> findOrdersByMinimumPrice(double price) {
         return new ArrayList<>(orderRepo.findByMinimumPrice(price));
     }
 }

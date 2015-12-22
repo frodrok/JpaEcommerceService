@@ -1,21 +1,20 @@
 package se.fredrikandthenurses.repository;
 
-import se.fredrikandthenurses.model.Order;
+import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.User;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by joanne on 21/12/15.
  */
-public interface OrderRepository extends CrudRepository<Order> {
+public interface OrderRepository extends CrudRepository<PersistableOrder> {
 
-    Order findByOrderNumber(String number);
+    PersistableOrder findByOrderNumber(String number);
 
-    Collection<Order> findByUser(User user);
+    Collection<PersistableOrder> findByUser(User user);
 
-    Collection<Order> findOrdersByStatus(String status);
+    Collection<PersistableOrder> findOrdersByStatus(String status);
 
-    Collection<Order> findByMinimumPrice(double price);
+    Collection<PersistableOrder> findByMinimumPrice(double price);
 }

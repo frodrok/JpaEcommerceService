@@ -17,6 +17,6 @@ public class JpaUserRepository extends AbstractJpaRepository <User> implements U
 
     @Override
     public User findByUsername(String username) {
-        return query("User.FindByUsername").setParameter("username", username).getSingleResult();
+        return query("User.FindByUsername", username);
     }
 }

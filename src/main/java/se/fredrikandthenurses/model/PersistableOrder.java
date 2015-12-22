@@ -1,20 +1,21 @@
 package se.fredrikandthenurses.model;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Order;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "Order.GetAll", query = "SELECT o FROM Order o")
+        @NamedQuery(name = "PersistableOrder.FindByUser", query = "SELECT o FROM PersistableOrder o WHERE o.user.id = ?1"),
+        @NamedQuery(name = "PersistableOrder.FindByOrderNumber", query = "SELECT o FROM PersistableOrder o WHERE o.orderNumber = ?1")
 })
-public class Order extends AbstractEntity {
+public class PersistableOrder extends AbstractEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-
     private User user;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "persistableOrder")
     private Collection<OrderRow> orderRowList;
 
     private String orderNumber;
@@ -22,10 +23,10 @@ public class Order extends AbstractEntity {
 
     private OrderStatus orderStatus;
 
-    protected Order() {
+    protected PersistableOrder() {
     }
 
-    public Order(String orderNumber, User user) {
+    public PersistableOrder(String orderNumber, User user) {
         this.user = user;
         this.orderRowList = new ArrayList<>();
         this.orderNumber = orderNumber;
@@ -68,17 +69,22 @@ public class Order extends AbstractEntity {
         return totalPrice;
     }
 
+    public PersistableOrder addOrderRow(OrderRow row){
+        this.orderRowList.add(row);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Order order = (Order) o;
+        PersistableOrder persistableOrder = (PersistableOrder) o;
 
-        if (user != null ? !user.equals(order.user) : order.user != null) return false;
-        if (orderRowList != null ? !orderRowList.equals(order.orderRowList) : order.orderRowList != null) return false;
-        if (orderNumber != null ? !orderNumber.equals(order.orderNumber) : order.orderNumber != null) return false;
-        return status != null ? status.equals(order.status) : order.status == null;
+        if (user != null ? !user.equals(persistableOrder.user) : persistableOrder.user != null) return false;
+        if (orderRowList != null ? !orderRowList.equals(persistableOrder.orderRowList) : persistableOrder.orderRowList != null) return false;
+        if (orderNumber != null ? !orderNumber.equals(persistableOrder.orderNumber) : persistableOrder.orderNumber != null) return false;
+        return status != null ? status.equals(persistableOrder.status) : persistableOrder.status == null;
 
     }
 
@@ -93,7 +99,7 @@ public class Order extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "PersistableOrder{" + getId() +
                 "user=" + user +
                 ", orderRowList=" + orderRowList +
                 ", orderNumber='" + orderNumber + '\'' +

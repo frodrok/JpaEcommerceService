@@ -12,7 +12,7 @@
 
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laboration_datalagring" />
             <property name="javax.persistence.jdbc.user" value="root" />
-            <property name="javax.persistence.jdbc.password" value="password" />
+            <property name="javax.persistence.jdbc.password" value="hannele1" />
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 
             <!-- Possible values: none, drop-and-create, create, drop

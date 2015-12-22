@@ -12,11 +12,11 @@ public class JpaProductRepository extends AbstractJpaRepository<Product> impleme
 
     @Override
     public Product findByProductNumber(String number) {
-        return query("Product.FindByProductNumber").setParameter("productNumber", number).getSingleResult();
+        return query("Product.FindByProductNumber", number);
     }
 
     @Override
     public Product findByProductName(String name) {
-        return query("Product.FindByProductName").setParameter("productName", name).getSingleResult();
+        return query("Product.FindByProductName", name);
     }
 }

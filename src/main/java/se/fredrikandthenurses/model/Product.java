@@ -6,8 +6,8 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "Product.FindByProductNumber", query = "SELECT p from Product p where p.productNumber = :productNumber"),
-        @NamedQuery(name = "Product.FindByProductName", query = "SELECT p from Product p where p.productName = :productName")
+        @NamedQuery(name = "Product.FindByProductNumber", query = "SELECT p from Product p where p.productNumber = ?1"),
+        @NamedQuery(name = "Product.FindByProductName", query = "SELECT p from Product p where p.productName = ?1")
         })
 public class Product extends AbstractEntity {
 
@@ -23,6 +23,18 @@ public class Product extends AbstractEntity {
         this.productName = productName;
         this.productPrice = productPrice;
         this.available = true;
+    }
+
+    public void setProductNumber(String productNumber) {
+        this.productNumber = productNumber;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductPrice(Double productPrice) {
+        this.productPrice = productPrice;
     }
 
     public boolean isAvailable() {

@@ -3,11 +3,10 @@ package se.fredrikandthenurses.model;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 @Entity
 @NamedQueries(value ={
-        @NamedQuery(name = "User.FindByUsername", query = "SELECT u FROM User u WHERE u.username = :username")})
+        @NamedQuery(name = "User.FindByUsername", query = "SELECT u FROM User u WHERE u.username = ?1")})
 
 public class User extends AbstractEntity {
 
@@ -19,9 +18,7 @@ public class User extends AbstractEntity {
     private boolean active;
 
     @OneToMany(mappedBy = "user")
-
-
-    private Collection<Order> orderList;
+    private Collection<PersistableOrder> persistableOrderList;
 
     protected User() {}
 
@@ -29,7 +26,7 @@ public class User extends AbstractEntity {
         this.username = username;
         this.password = password;
         this.active = true;
-        orderList = new HashSet<>();
+        persistableOrderList = new HashSet<>();
     }
 
     public String getUsername() {
@@ -44,8 +41,8 @@ public class User extends AbstractEntity {
         this.active = active;
     }
 
-    public Collection<Order> getOrderList() {
-        return orderList;
+    public Collection<PersistableOrder> getPersistableOrderList() {
+        return persistableOrderList;
     }
 
     public String getPassword() {
@@ -65,8 +62,8 @@ public class User extends AbstractEntity {
 
     }
 
-    public User addOrder(Order order) {
-        orderList.add(order);
+    public User addOrder(PersistableOrder persistableOrder) {
+        persistableOrderList.add(persistableOrder);
         return this;
     }
 
