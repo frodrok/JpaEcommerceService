@@ -11,11 +11,12 @@ import java.util.HashSet;
         @NamedQuery(name = "PersistableOrder.FindByUser", query = "SELECT p FROM PersistableOrder p WHERE p.user.id = ?1"),
         @NamedQuery(name = "PersistableOrder.FindByOrderNumber", query = "SELECT p FROM PersistableOrder p Join Fetch p.orderRowList WHERE p.orderNumber = ?1"),
         @NamedQuery(name = "PersistableOrder.FindByStatus", query = "SELECT p FROM PersistableOrder p Join Fetch p.orderRowList WHERE p.orderStatus = ?1"),
-        @NamedQuery(name = "PersistableOrder.FindByMinimumPrice", query= "SELECT p FROM PersistableOrder p JOIN FETCH p.orderRowList where p.price > ?1 ")
+        @NamedQuery(name = "PersistableOrder.FindByMinimumPrice", query = "SELECT p FROM PersistableOrder p JOIN FETCH p.orderRowList where p.price > ?1 "),
+        @NamedQuery(name = "PersistableOrder.getAll", query = "SELECT p FROM PersistableOrder p")
 })
 public class PersistableOrder extends AbstractEntity {
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne()
     private User user;
 
     @OneToMany(mappedBy = "persistableOrder", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

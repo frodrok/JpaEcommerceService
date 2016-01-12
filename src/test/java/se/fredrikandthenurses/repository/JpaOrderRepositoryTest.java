@@ -9,6 +9,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.Order;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.*;
 
 /**
@@ -37,56 +39,43 @@ public class JpaOrderRepositoryTest {
         product = new Product("789", "corona", 10.00);
         orderRow =new OrderRow(product, 10);
         user = new User("joanne", "123");
+        userRepository.saveOrUpdate(user);
         persistableOrder = new PersistableOrder("123", user);
         persistableOrder.addOrderRow(orderRow);
         orderRow.addOrder(persistableOrder);
+        orderRepository.saveOrUpdate(persistableOrder);
 
+    }
+
+    @Test
+    public void testFindOrderById(){
+        assertThat(orderRepository.find(persistableOrder.getId()), equalTo(persistableOrder));
     }
 
     @Test
     public void testFindByOrderNumber() throws Exception {
-        orderRepository.saveOrUpdate(persistableOrder);
-        orderRepository.findByOrderNumber("123").getOrderRowList().forEach(orderRow1 -> System.out.println(orderRow1.getPrice()));
-    }
-
-    @Test
-    public void saveRegularOrderObject() {
-        System.out.println(persistableOrder.getId());
-        // orderRow.addOrder(persistableOrder);
-        persistableOrder.addOrderRow(orderRow);
-        orderRepository.saveOrUpdate(persistableOrder);
-        System.out.println(persistableOrder.getId());
+        assertThat(orderRepository.findByOrderNumber("123"), equalTo(persistableOrder));
     }
 
     @Test
     public void testFindByUser() throws Exception {
-
-        orderRepository.saveOrUpdate(persistableOrder);
-        orderRepository.findByUser(user);
-        orderRepository.findByUser(user).forEach(order -> System.out.println(order.getUser().getUsername()));
+        PersistableOrder persistableOrderTwo = new PersistableOrder("124", user);
+        orderRepository.saveOrUpdate(persistableOrderTwo);
+        assertThat(orderRepository.findByUser(user), contains(persistableOrder, persistableOrderTwo));
     }
 
     @Test
     public void testFindOrdersByStatus() throws Exception {
-        orderRepository.saveOrUpdate(persistableOrder);
-        orderRepository.findOrdersByStatus(persistableOrder.getStatus()).forEach(order -> System.out.println(order.getStatus().toString()));
-
+        assertThat(orderRepository.findOrdersByStatus(persistableOrder.getStatus()), contains(persistableOrder));
 }
 
     @Test
     public void testFindByMinimumPrice() throws Exception {
-
-        orderRepository.saveOrUpdate(persistableOrder);
-        orderRepository.findByMinimumPrice(101.00).forEach(order -> System.out.println(order.getPrice()));
-
+        assertThat(orderRepository.findByMinimumPrice(99.00), contains(persistableOrder));
     }
 
     @Test
-    public void testGetAllOrderRowsFromOneOrder() {
-        orderRepository.saveOrUpdate(persistableOrder);
-        for (OrderRow o : orderRepository.find(persistableOrder.getId()).getOrderRowList()) {
-            System.out.println(o.getProduct().getProductName());
-        }
-
+    public void testGetAll(){
+        assertThat(orderRepository.getAll(), contains(persistableOrder));
     }
 }

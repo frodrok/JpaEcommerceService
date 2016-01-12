@@ -3,6 +3,7 @@ package se.fredrikandthenurses.repository;
 import se.fredrikandthenurses.model.Product;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 public class JpaProductRepository extends AbstractJpaRepository<Product> implements ProductRepository {
 
@@ -18,5 +19,10 @@ public class JpaProductRepository extends AbstractJpaRepository<Product> impleme
     @Override
     public Product findByProductName(String name) {
         return query("Product.FindByProductName", name);
+    }
+
+    @Override
+    public List<Product> getAll() {
+        return queryForList("Product.GetAll");
     }
 }
