@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.Order;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @NamedQueries(value = {
@@ -17,7 +18,7 @@ public class PersistableOrder extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
 
-    @OneToMany(mappedBy = "persistableOrder", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "persistableOrder", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Collection<OrderRow> orderRowList;
 
     private String orderNumber;
@@ -42,8 +43,9 @@ public class PersistableOrder extends AbstractEntity {
         return user;
     }
 
-    public Collection<OrderRow> getOrderRowList() {
-        return orderRowList;
+    public Collection<OrderRow> getOrderRowList()
+    {
+        return new HashSet<>(orderRowList);
     }
 
     public String getOrderNumber() {
@@ -79,8 +81,6 @@ public class PersistableOrder extends AbstractEntity {
         this.price += row.getPrice();
         return this;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

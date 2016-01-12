@@ -14,7 +14,7 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
     private final Class<E> entityClass;
     private EntityManager manager;
 
-    public AbstractJpaRepository(EntityManagerFactory emf, Class<E> entityClass) {
+    protected AbstractJpaRepository(EntityManagerFactory emf, Class<E> entityClass) {
         this.factory = emf;
         this.entityClass = entityClass;
     }
@@ -46,10 +46,8 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
 
         try {
             manager.getTransaction().begin();
-            if (entity.getId() == null) {
-                manager.persist(entity);
-            } else {
-                manager.merge(entity);
+            if (entity.getId() != null) {
+                manager.remove(entity);
             }
 
             manager.getTransaction().commit();
@@ -90,7 +88,7 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         return entityList;
     }
 
-    public E query(String queryName, Object ...parameters) {
+    protected E query(String queryName, Object ...parameters) {
         manager = factory.createEntityManager();
         TypedQuery<E> query = manager.createNamedQuery(queryName, entityClass);
         for (int i = 0; i < parameters.length ; i++) {
@@ -101,7 +99,7 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         return entityToReturn;
     }
 
-    public List<E> queryForList(String queryName, Object ...parameters) {
+    protected List<E> queryForList(String queryName, Object ...parameters) {
         manager = factory.createEntityManager();
         TypedQuery<E> query = manager.createNamedQuery(queryName, entityClass);
         for (int i = 0; i < parameters.length; i++) {

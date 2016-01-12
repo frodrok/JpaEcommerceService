@@ -52,7 +52,7 @@ public class JpaOrderRepositoryTest {
     @Test
     public void saveRegularOrderObject() {
         System.out.println(persistableOrder.getId());
-        orderRow.addOrder(persistableOrder);
+        // orderRow.addOrder(persistableOrder);
         persistableOrder.addOrderRow(orderRow);
         orderRepository.saveOrUpdate(persistableOrder);
         System.out.println(persistableOrder.getId());
@@ -81,4 +81,12 @@ public class JpaOrderRepositoryTest {
 
     }
 
+    @Test
+    public void testGetAllOrderRowsFromOneOrder() {
+        orderRepository.saveOrUpdate(persistableOrder);
+        for (OrderRow o : orderRepository.find(persistableOrder.getId()).getOrderRowList()) {
+            System.out.println(o.getProduct().getProductName());
+        }
+
+    }
 }

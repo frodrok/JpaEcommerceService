@@ -6,11 +6,12 @@ import java.util.HashSet;
 
 @Entity
 @NamedQueries(value ={
+        @NamedQuery(name = "User.GetAll", query = "SELECT u FROM User u"),
         @NamedQuery(name = "User.FindByUsername", query = "SELECT u FROM User u WHERE u.username = ?1")})
 
 public class User extends AbstractEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
@@ -42,7 +43,7 @@ public class User extends AbstractEntity {
     }
 
     public Collection<PersistableOrder> getPersistableOrderList() {
-        return persistableOrderList;
+        return new HashSet<>(persistableOrderList);
     }
 
     public String getPassword() {
@@ -57,7 +58,7 @@ public class User extends AbstractEntity {
         User user = (User) o;
 
         if (active != user.active) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (username != null ? !username.equalsIgnoreCase(user.username) : user.username != null) return false;
         return password != null ? password.equals(user.password) : user.password == null;
 
     }

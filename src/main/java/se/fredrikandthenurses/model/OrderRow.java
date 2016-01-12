@@ -6,7 +6,7 @@ import javax.persistence.criteria.Order;
 @Entity
 public class OrderRow extends AbstractEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name= "productId")
     private Product product;
 
@@ -22,8 +22,13 @@ public class OrderRow extends AbstractEntity {
 
     protected OrderRow() {}
 
-    public double getPrice(){
+    public double getPrice()
+    {
         return product.getProductPrice()*amount;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     @Override
@@ -58,8 +63,5 @@ public class OrderRow extends AbstractEntity {
         this.persistableOrder = order;
         return this;
     }
-    /* public OrderRow addOrder(TestNewOrder order) {
-        this.persistableOrder = order;
-        return this;
-    } */
+
 }

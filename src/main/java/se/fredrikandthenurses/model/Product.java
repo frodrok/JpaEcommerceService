@@ -6,6 +6,7 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries(value = {
+        @NamedQuery(name = "Product.GetAll", query = "SELECT p FROM Product p"),
         @NamedQuery(name = "Product.FindByProductNumber", query = "SELECT p from Product p where p.productNumber = ?1"),
         @NamedQuery(name = "Product.FindByProductName", query = "SELECT p from Product p where p.productName = ?1")
         })
