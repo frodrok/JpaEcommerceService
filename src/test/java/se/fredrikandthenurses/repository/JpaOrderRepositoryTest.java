@@ -4,10 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import se.fredrikandthenurses.model.*;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.Order;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.contains;
@@ -42,7 +40,7 @@ public class JpaOrderRepositoryTest {
         userRepository.saveOrUpdate(user);
         persistableOrder = new PersistableOrder("123", user);
         persistableOrder.addOrderRow(orderRow);
-        orderRow.addOrder(persistableOrder);
+        orderRow.setOrder(persistableOrder);
         orderRepository.saveOrUpdate(persistableOrder);
 
     }
@@ -77,5 +75,22 @@ public class JpaOrderRepositoryTest {
     @Test
     public void testGetAll(){
         assertThat(orderRepository.getAll(), contains(persistableOrder));
+    }
+
+    @Test
+    public void testUpdatedOrderShouldBeUpdated(){
+        OrderRow anotherRow = new OrderRow(product, 50);
+        persistableOrder.addOrderRow(anotherRow);
+        anotherRow.setOrder(persistableOrder);
+        orderRepository.saveOrUpdate(persistableOrder);
+        assertThat(orderRepository.find(persistableOrder.getId()).getOrderRowList(), contains(orderRow, anotherRow));
+    }
+
+    @Test
+    public void testStatusShouldBeChanged(){
+        assertTrue(orderRepository.find(persistableOrder.getId()).getStatus().equals(OrderStatus.PLACED));
+        persistableOrder.setStatusShipped();
+        orderRepository.saveOrUpdate(persistableOrder);
+        assertTrue(orderRepository.find(persistableOrder.getId()).getStatus().equals(OrderStatus.SHIPPED));
     }
 }

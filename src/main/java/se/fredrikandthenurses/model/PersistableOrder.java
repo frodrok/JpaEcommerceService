@@ -16,10 +16,10 @@ import java.util.HashSet;
 })
 public class PersistableOrder extends AbstractEntity {
 
-    @ManyToOne()
+    @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "persistableOrder", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "persistableOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<OrderRow> orderRowList;
 
     private String orderNumber;

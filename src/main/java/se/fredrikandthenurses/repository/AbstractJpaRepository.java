@@ -46,10 +46,7 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
 
         try {
             manager.getTransaction().begin();
-            if (entity.getId() != null) {
-                manager.remove(entity);
-            }
-
+            manager.remove(manager.contains(entity)? entity: manager.merge(entity));
             manager.getTransaction().commit();
 
         } catch (Exception e) {

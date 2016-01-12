@@ -12,7 +12,7 @@ public class OrderRow extends AbstractEntity {
 
     private Integer amount;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private PersistableOrder persistableOrder;
 
     public OrderRow(Product product, Integer amount) {
@@ -59,7 +59,7 @@ public class OrderRow extends AbstractEntity {
                 '}';
     }
 
-    public OrderRow addOrder(PersistableOrder order) {
+    public OrderRow setOrder(PersistableOrder order) {
         this.persistableOrder = order;
         return this;
     }
