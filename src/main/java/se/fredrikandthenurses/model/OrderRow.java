@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class OrderRow extends AbstractEntity {
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name= "productId")
     private Product product;
 

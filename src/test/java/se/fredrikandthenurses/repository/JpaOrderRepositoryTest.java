@@ -39,6 +39,7 @@ public class JpaOrderRepositoryTest {
         user = new User("joanne", "123");
         userRepository.saveOrUpdate(user);
         persistableOrder = new PersistableOrder("123", user);
+        productRepository.saveOrUpdate(product);
         persistableOrder.addOrderRow(orderRow);
         orderRepository.saveOrUpdate(persistableOrder);
 
@@ -91,4 +92,7 @@ public class JpaOrderRepositoryTest {
         orderRepository.saveOrUpdate(persistableOrder);
         assertTrue(orderRepository.find(persistableOrder.getId()).getStatus().equals(OrderStatus.SHIPPED));
     }
+
+    @Test
+    public void
 }
