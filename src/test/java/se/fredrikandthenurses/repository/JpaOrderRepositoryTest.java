@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import se.fredrikandthenurses.exception.RepositoryException;
 import se.fredrikandthenurses.model.*;
 
 import javax.management.RuntimeErrorException;
@@ -107,12 +108,15 @@ public class JpaOrderRepositoryTest {
         OrderRow oR = new OrderRow(p, 15);
         PersistableOrder order = new PersistableOrder("12345", user);
         order.addOrderRow(oR);
-        try {
-            orderRepository.saveOrUpdate(order);
-        } catch (Exception e) {
-            assertThat(e.getCause().getCause().getCause().getMessage(), equalTo("object references an unsaved transient instance - save the transient instance before flushing " +
-                    ": se.fredrikandthenurses.model.OrderRow.product ->" +
-                    " se.fredrikandthenurses.model.Product"));
-        }
+        expectedException.expect(IllegalStateException.class);
+        orderRepository.saveOrUpdate(order);
+
+    }
+
+    @Test
+    public void userShouldNotBeNull(){
+        PersistableOrder order = new PersistableOrder("12", null);
+        expectedException.expect(RepositoryException.class);
+        orderRepository.saveOrUpdate(order);
     }
 }

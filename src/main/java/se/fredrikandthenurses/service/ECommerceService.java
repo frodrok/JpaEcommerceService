@@ -10,6 +10,7 @@ import se.fredrikandthenurses.repository.ProductRepository;
 import se.fredrikandthenurses.repository.UserRepository;
 import se.fredrikandthenurses.validation.Validator;
 
+import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +27,21 @@ public final class ECommerceService {
         this.orderRepo = orderRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
+
     }
 
     public Product addProduct(Product product) throws RepositoryException {
         Product p;
-        try {
-            p = productRepo.saveOrUpdate(product);
-        } catch (Exception e) {
-            throw new RepositoryException(e);
+        if(Validator.isValid(product)) {
+            try {
+                p = productRepo.saveOrUpdate(product);
+            } catch (PersistenceException e) {
+                throw new RepositoryException(e);
+            }
         }
-
+        else{
+            throw new RepositoryException("Not valid product");
+        }
         return p;
     }
 
@@ -74,7 +80,19 @@ public final class ECommerceService {
     }
 
     public User addUser(User user) {
-        return userRepo.saveOrUpdate(user);
+        User u;
+
+        if (Validator.isValid(user)) {
+            try {
+               u = userRepo.saveOrUpdate(user);
+            } catch (PersistenceException e) {
+                throw new RepositoryException(e);
+            }
+        } else {
+            throw new RepositoryException("Not valid user");
+        }
+
+        return u;
     }
 
     public User findUserByUsername(String username) {
@@ -86,7 +104,17 @@ public final class ECommerceService {
     }
 
     public PersistableOrder addOrder(PersistableOrder persistableOrder) {
-        return orderRepo.saveOrUpdate(persistableOrder);
+        PersistableOrder o;
+        if (Validator.isValid(persistableOrder)) {
+            try {
+                o = orderRepo.saveOrUpdate(persistableOrder);
+            } catch (PersistenceException e) {
+                throw new RepositoryException(e);
+            }
+        } else {
+            throw new RepositoryException("Not valid order");
+        }
+        return o;
     }
 
     public List<PersistableOrder> getAllOrders() {

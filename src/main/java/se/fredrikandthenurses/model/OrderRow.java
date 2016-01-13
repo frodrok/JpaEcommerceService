@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class OrderRow extends AbstractEntity {
 
     @ManyToOne
-    @JoinColumn(name= "productId")
+    @JoinColumn(name= "productId", nullable = false)
     private Product product;
     @Column(nullable = false)
     private Integer amount;
