@@ -6,11 +6,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import se.fredrikandthenurses.model.Product;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 
 /**
  * Created by TheYellowBelliedMarmot on 2015-12-22.
@@ -20,7 +23,7 @@ public class JpaProductRepositoryTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private ProductRepository jpr;
+    private ProductRepository productRepo;
     private EntityManagerFactory emf;
     private Product product;
 
@@ -28,51 +31,41 @@ public class JpaProductRepositoryTest {
     public void setup()
     {
         emf = Persistence.createEntityManagerFactory("lokaldatabas");
-        jpr = new JpaProductRepository(emf);
+        productRepo = new JpaProductRepository(emf);
         product = new Product("123", "Brooklyn Lager", 15.90);
+        productRepo.saveOrUpdate(product);
     }
 
     @Test
-    public void productShouldBePersisted(){
-        System.out.println(product.toString());
-        jpr.saveOrUpdate(product);
-        System.out.println(product.toString());
-
+    public void productShouldBeFoundById(){
+        assertThat(productRepo.find(product.getId()), equalTo(product));
     }
 
     @Test
     public void  productShouldBeUpdated(){
-        jpr.saveOrUpdate(product);
-        Product product1 = jpr.findByProductName("Brooklyn Lager");
-        System.out.println(product1.isAvailable());
-        product1.setAvailable(false);
-        jpr.saveOrUpdate(product1);
-        System.out.println(product1.isAvailable());
+        assertTrue(productRepo.find(product.getId()).isAvailable());
+        product.setAvailable(false);
+        productRepo.saveOrUpdate(product);
+        assertFalse(productRepo.find(product.getId()).isAvailable());
     }
 
     @Test
     public void productShouldBeRetrievableByNumber(){
-        jpr.saveOrUpdate(product);
-        System.out.println(jpr.findByProductNumber("123"));
-
-    }
-
-    @Test
-    public void getByIdTest(){
-        jpr.saveOrUpdate(product);
-        System.out.println(jpr.find(product.getId()));
+        assertThat(productRepo.findByProductNumber("123"), equalTo(product));
     }
 
     @Test
     public void allProductsShouldBeRetrievable(){
-        jpr.saveOrUpdate(product);
         Product product1 = new Product("234", "sol", 11.99);
-        jpr.saveOrUpdate(product1);
+        productRepo.saveOrUpdate(product1);
+        assertThat(productRepo.getAll(), contains(product, product1));
+    }
 
-        for (Product product2 : jpr.getAll()) {
-            System.out.println(product2);
-
-        }
+    @Test
+    public void deletedProductShouldBeDeleted(){
+        assertThat(productRepo.getAll(), contains(product));
+        productRepo.remove(product);
+        assertFalse(productRepo.getAll().contains(product));
     }
 
 

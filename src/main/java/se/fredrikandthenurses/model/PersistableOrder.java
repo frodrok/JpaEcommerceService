@@ -19,7 +19,8 @@ public class PersistableOrder extends AbstractEntity {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "persistableOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name= "orderId")
     private Collection<OrderRow> orderRowList;
 
     private String orderNumber;

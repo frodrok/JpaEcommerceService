@@ -40,7 +40,6 @@ public class JpaOrderRepositoryTest {
         userRepository.saveOrUpdate(user);
         persistableOrder = new PersistableOrder("123", user);
         persistableOrder.addOrderRow(orderRow);
-        orderRow.setOrder(persistableOrder);
         orderRepository.saveOrUpdate(persistableOrder);
 
     }
@@ -81,7 +80,6 @@ public class JpaOrderRepositoryTest {
     public void testUpdatedOrderShouldBeUpdated(){
         OrderRow anotherRow = new OrderRow(product, 50);
         persistableOrder.addOrderRow(anotherRow);
-        anotherRow.setOrder(persistableOrder);
         orderRepository.saveOrUpdate(persistableOrder);
         assertThat(orderRepository.find(persistableOrder.getId()).getOrderRowList(), contains(orderRow, anotherRow));
     }

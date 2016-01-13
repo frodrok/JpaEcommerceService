@@ -7,7 +7,9 @@ import java.util.HashSet;
 @Entity
 @NamedQueries(value ={
         @NamedQuery(name = "User.GetAll", query = "SELECT u FROM User u"),
-        @NamedQuery(name = "User.FindByUsername", query = "SELECT u FROM User u WHERE u.username = ?1")})
+        @NamedQuery(name = "User.FindByUsername", query = "SELECT u FROM User u WHERE u.username = ?1"),
+        @NamedQuery(name= "User.GetAllWithOrders", query = "SELECT u FROM User u JOIN FETCH u.persistableOrderList")})
+
 
 public class User extends AbstractEntity {
 

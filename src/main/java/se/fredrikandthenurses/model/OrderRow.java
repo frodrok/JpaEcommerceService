@@ -1,7 +1,6 @@
 package se.fredrikandthenurses.model;
 
 import javax.persistence.*;
-import javax.persistence.criteria.Order;
 
 @Entity
 public class OrderRow extends AbstractEntity {
@@ -11,9 +10,6 @@ public class OrderRow extends AbstractEntity {
     private Product product;
 
     private Integer amount;
-
-    @ManyToOne
-    private PersistableOrder persistableOrder;
 
     public OrderRow(Product product, Integer amount) {
         this.product = product;
@@ -55,12 +51,11 @@ public class OrderRow extends AbstractEntity {
         return "OrderRow{" +
                 "product=" + product +
                 ", amount=" + amount +
-                ", persistableOrder=" + persistableOrder +
+                 +
                 '}';
     }
 
     public OrderRow setOrder(PersistableOrder order) {
-        this.persistableOrder = order;
         return this;
     }
 

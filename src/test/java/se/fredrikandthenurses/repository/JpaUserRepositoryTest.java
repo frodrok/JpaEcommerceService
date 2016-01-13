@@ -2,10 +2,16 @@ package se.fredrikandthenurses.repository;
 
 import org.junit.Before;
 import org.junit.Test;
+import se.fredrikandthenurses.model.OrderRow;
+import se.fredrikandthenurses.model.PersistableOrder;
+import se.fredrikandthenurses.model.Product;
 import se.fredrikandthenurses.model.User;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.Order;
+
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
@@ -14,7 +20,6 @@ import static org.junit.Assert.*;
  * Created by joanne on 22/12/15.
  */
 public class JpaUserRepositoryTest {
-
 
     private UserRepository userRepo;
     private User user;
@@ -52,8 +57,5 @@ public class JpaUserRepositoryTest {
         userRepo.remove(user);
         assertFalse(userRepo.getAll().contains(user));
     }
-
-
-
 
 }
