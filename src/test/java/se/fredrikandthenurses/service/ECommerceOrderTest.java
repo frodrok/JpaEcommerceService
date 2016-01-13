@@ -19,6 +19,7 @@ import se.fredrikandthenurses.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -67,15 +68,14 @@ public class ECommerceOrderTest {
     }
 
     @Test
-    public void orderShouldBeRetrievableByOrderNumber() {
+    public void orderShouldBeRetrievableByOrderNumber() throws Exception {
         service.addOrder(persistableOrder);
         verify(orderRepositoryMock).saveOrUpdate(persistableOrder);
 
         when(orderRepositoryMock.findByOrderNumber("1001")).thenReturn(persistableOrder);
 
-        assertThat(service.getAllOrders(), contains(persistableOrder));
-        verify(orderRepositoryMock,times(1)).getAll();
-
+        assertThat(service.findByOrderNumber("1001"), equalTo(persistableOrder));
+        verify(orderRepositoryMock,times(1)).findByOrderNumber("1001");
     }
 
     @Test

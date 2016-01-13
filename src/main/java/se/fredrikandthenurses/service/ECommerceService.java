@@ -1,5 +1,6 @@
 package se.fredrikandthenurses.service;
 
+import se.fredrikandthenurses.exception.ProductException;
 import se.fredrikandthenurses.model.OrderStatus;
 import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.Product;
@@ -26,16 +27,49 @@ public final class ECommerceService {
         this.productRepo = productRepo;
     }
 
-    public Product addProduct(Product product) {
-        return productRepo.saveOrUpdate(product);
+    public Product addProduct(Product product) throws ProductException {
+        Product p;
+        try {
+            p = productRepo.saveOrUpdate(product);
+        } catch (Exception e) {
+            throw new ProductException(e);
+        }
+
+        return p;
     }
 
-    public Product findByProductNumber(String productNumber) {
-        return productRepo.findByProductNumber(productNumber);
+    public Product findByProductNumber(String productNumber) throws ProductException {
+        Product p;
+        try {
+            p = productRepo.findByProductNumber(productNumber);
+        } catch (Exception e) {
+            throw new ProductException(e);
+        }
+
+        return p;
     }
 
-    public Product findByProductName(String productName) {
-        return productRepo.findByProductName(productName);
+    public Product findByProductName(String productName) throws ProductException {
+        Product p;
+        try {
+            p = productRepo.findByProductName(productName);
+        } catch (Exception e) {
+            throw new ProductException(e);
+        }
+
+        return p;
+
+    }
+
+    public List<Product> getAllProducts() throws ProductException {
+        List<Product> productList;
+        try {
+            productList = productRepo.getAll();
+        } catch (Exception e) {
+            throw new ProductException(e);
+        }
+
+        return productList;
     }
 
     public User addUser(User user) {
@@ -48,10 +82,6 @@ public final class ECommerceService {
 
     public List<User> getAllUsers() {
         return userRepo.getAll();
-    }
-
-    public List<Product> getAllProducts() {
-        return productRepo.getAll();
     }
 
     public PersistableOrder addOrder(PersistableOrder persistableOrder) {
@@ -72,5 +102,9 @@ public final class ECommerceService {
 
     public List<PersistableOrder> findOrdersByMinimumPrice(double price) {
         return new ArrayList<>(orderRepo.findByMinimumPrice(price));
+    }
+
+    public PersistableOrder findByOrderNumber(String orderNumber) {
+        return orderRepo.findByOrderNumber(orderNumber);
     }
 }

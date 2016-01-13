@@ -71,21 +71,6 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         return entityToReturn;
     }
 
-    /*public List<E> getAll() {
-        List<E> entityList;
-        manager = factory.createEntityManager();
-
-        try {
-            entityList = manager.createQuery("SELECT o from " + entityClass.getSimpleName() + " o").getResultList();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        manager.close();
-        return entityList;
-    }*/
-
-
     protected E query(String queryName, Object ...parameters) {
         manager = factory.createEntityManager();
         TypedQuery<E> query = manager.createNamedQuery(queryName, entityClass);

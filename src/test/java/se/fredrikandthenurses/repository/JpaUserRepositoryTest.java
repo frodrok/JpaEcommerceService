@@ -1,7 +1,9 @@
 package se.fredrikandthenurses.repository;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import se.fredrikandthenurses.model.OrderRow;
 import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.Product;
@@ -9,17 +11,23 @@ import se.fredrikandthenurses.model.User;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
 import javax.persistence.criteria.Order;
+import javax.swing.plaf.basic.BasicBorders;
 
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.*;
 
 /**
  * Created by joanne on 22/12/15.
  */
 public class JpaUserRepositoryTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private UserRepository userRepo;
     private User user;
@@ -56,6 +64,23 @@ public class JpaUserRepositoryTest {
         assertTrue(userRepo.getAll().contains(user));
         userRepo.remove(user);
         assertFalse(userRepo.getAll().contains(user));
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddTwoUsersWithSameUsername() {
+        User user1 = new User("fredrik", "password");
+        User user2 = new User("fredrik", "password");
+
+        userRepo.saveOrUpdate(user1);
+        expectedException.expect(RollbackException.class);
+        expectedException.expectCause(isA(RollbackException.class));
+        expectedException.expectMessage("Error while comitting the transaction");
+
+//        try {dd
+            userRepo.saveOrUpdate(user2);
+//        } catch (RuntimeException e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 
 }

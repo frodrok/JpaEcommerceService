@@ -1,5 +1,6 @@
 package se.fredrikandthenurses.service;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,13 +54,13 @@ public class ECommerceProductTest {
     }
 
     @Test
-    public void productShouldBeAddedOrUpdated(){
+    public void productShouldBeAddedOrUpdated() throws Exception {
         service.addProduct(product);
         verify(productRepositoryMock, times(1)).saveOrUpdate(product);
     }
 
     @Test
-    public void productShouldBeRetrievableByProductNumber() {
+    public void productShouldBeRetrievableByProductNumber() throws Exception {
         service.addProduct(product);
 
         when(productRepositoryMock.findByProductNumber(product.getProductNumber())).thenReturn(product);
@@ -71,7 +72,7 @@ public class ECommerceProductTest {
     }
 
     @Test
-    public void productShouldBeRetrievableByProductName(){
+    public void productShouldBeRetrievableByProductName() throws Exception {
 
         service.addProduct(product);
 
@@ -85,11 +86,12 @@ public class ECommerceProductTest {
     }
 
     @Test
-    public void addedProductShouldBeInGetAllList() {
+    public void addedProductShouldBeInGetAllList() throws Exception {
 
         service.addProduct(product);
 
         List<Product> productList = new ArrayList<>();
+        productList.add(product);
         when(productRepositoryMock.getAll()).thenReturn(productList);
 
         assertThat(service.getAllProducts(), contains(product));

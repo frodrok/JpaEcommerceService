@@ -1,11 +1,16 @@
 package se.fredrikandthenurses.repository;
 
+import org.hibernate.TransientPropertyValueException;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import se.fredrikandthenurses.model.*;
 
+import javax.management.RuntimeErrorException;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.contains;
@@ -15,6 +20,9 @@ import static org.junit.Assert.*;
  * Created by joanne on 22/12/15.
  */
 public class JpaOrderRepositoryTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private OrderRepository orderRepository;
     private UserRepository userRepository;
@@ -94,5 +102,17 @@ public class JpaOrderRepositoryTest {
     }
 
     @Test
-    public void
+    public void cantAddNonExistingProduct() throws Exception {
+        Product p = new Product("123", "Uno", 19.99);
+        OrderRow oR = new OrderRow(p, 15);
+        PersistableOrder order = new PersistableOrder("12345", user);
+        order.addOrderRow(oR);
+        try {
+            orderRepository.saveOrUpdate(order);
+        } catch (Exception e) {
+            assertThat(e.getCause().getCause().getCause().getMessage(), equalTo("object references an unsaved transient instance - save the transient instance before flushing " +
+                    ": se.fredrikandthenurses.model.OrderRow.product ->" +
+                    " se.fredrikandthenurses.model.Product"));
+        }
+    }
 }
