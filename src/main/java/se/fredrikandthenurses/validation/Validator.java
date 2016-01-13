@@ -18,7 +18,7 @@ public class Validator{
     }
 
     public static boolean isValid(User entity) {
-       return passwordIsEmpty(entity.getPassword());
+       return !passwordIsEmpty(entity.getPassword());
     }
 
     public static boolean isValid(PersistableOrder entity) {
