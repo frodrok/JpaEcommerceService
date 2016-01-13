@@ -1,5 +1,6 @@
 package se.fredrikandthenurses.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -12,9 +13,13 @@ import javax.persistence.NamedQuery;
         })
 public class Product extends AbstractEntity {
 
+    @Column(nullable = false, unique = true)
     private String productNumber;
+    @Column(nullable = false, unique = true)
     private String productName;
+    @Column(nullable = false)
     private Double productPrice;
+    @Column
     private boolean available;
 
     protected Product() {}

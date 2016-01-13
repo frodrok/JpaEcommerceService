@@ -1,12 +1,10 @@
 package se.fredrikandthenurses.repository;
 
+import se.fredrikandthenurses.exception.RepositoryException;
 import se.fredrikandthenurses.model.AbstractEntity;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class AbstractJpaRepository<E extends AbstractEntity> implements CrudRepository<E> {
 
@@ -32,16 +30,15 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
 
             manager.getTransaction().commit();
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (PersistenceException e) {
+            throw new RepositoryException("Could not persist entity: " + entityClass.getSimpleName(), e.getCause());
         } finally {
             manager.close();
         }
-        // return manager.find(entityClass, entity.getId());
         return entity;
     }
 
-    public E remove(E entity) {
+    public E remove(E entity){
         manager = factory.createEntityManager();
 
         try {
@@ -49,8 +46,8 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
             manager.remove(manager.contains(entity)? entity: manager.merge(entity));
             manager.getTransaction().commit();
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (PersistenceException e) {
+            throw new RepositoryException("Could not remove entity: " + entityClass.getSimpleName(), e.getCause());
         } finally {
             manager.close();
         }
@@ -63,15 +60,15 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         manager = factory.createEntityManager();
         try {
             entityToReturn = manager.find(entityClass, id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (PersistenceException e) {
+            throw new RepositoryException("Could not find entity: " + entityClass.getSimpleName(), e.getCause());
         } finally {
             manager.close();
         }
         return entityToReturn;
     }
 
-    protected E query(String queryName, Object ...parameters) {
+    protected E query(String queryName, Object ...parameters) throws PersistenceException{
         manager = factory.createEntityManager();
         TypedQuery<E> query = manager.createNamedQuery(queryName, entityClass);
         for (int i = 0; i < parameters.length ; i++) {
@@ -82,7 +79,7 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         return entityToReturn;
     }
 
-    protected List<E> queryForList(String queryName, Object ...parameters) {
+    protected List<E> queryForList(String queryName, Object ...parameters) throws PersistenceException{
         manager = factory.createEntityManager();
         TypedQuery<E> query = manager.createNamedQuery(queryName, entityClass);
         for (int i = 0; i < parameters.length; i++) {
@@ -92,7 +89,5 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         manager.close();
         return entityList;
     }
-
-
 
 }

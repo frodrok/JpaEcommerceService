@@ -8,7 +8,7 @@ public class OrderRow extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name= "productId")
     private Product product;
-
+    @Column(nullable = false)
     private Integer amount;
 
     public OrderRow(Product product, Integer amount) {

@@ -1,6 +1,6 @@
 package se.fredrikandthenurses.service;
 
-import se.fredrikandthenurses.exception.ProductException;
+import se.fredrikandthenurses.exception.RepositoryException;
 import se.fredrikandthenurses.model.OrderStatus;
 import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.Product;
@@ -8,6 +8,7 @@ import se.fredrikandthenurses.model.User;
 import se.fredrikandthenurses.repository.OrderRepository;
 import se.fredrikandthenurses.repository.ProductRepository;
 import se.fredrikandthenurses.repository.UserRepository;
+import se.fredrikandthenurses.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,46 +28,46 @@ public final class ECommerceService {
         this.productRepo = productRepo;
     }
 
-    public Product addProduct(Product product) throws ProductException {
+    public Product addProduct(Product product) throws RepositoryException {
         Product p;
         try {
             p = productRepo.saveOrUpdate(product);
         } catch (Exception e) {
-            throw new ProductException(e);
+            throw new RepositoryException(e);
         }
 
         return p;
     }
 
-    public Product findByProductNumber(String productNumber) throws ProductException {
+    public Product findByProductNumber(String productNumber) throws RepositoryException {
         Product p;
         try {
             p = productRepo.findByProductNumber(productNumber);
         } catch (Exception e) {
-            throw new ProductException(e);
+            throw new RepositoryException(e);
         }
 
         return p;
     }
 
-    public Product findByProductName(String productName) throws ProductException {
+    public Product findByProductName(String productName) throws RepositoryException {
         Product p;
         try {
             p = productRepo.findByProductName(productName);
         } catch (Exception e) {
-            throw new ProductException(e);
+            throw new RepositoryException(e);
         }
 
         return p;
 
     }
 
-    public List<Product> getAllProducts() throws ProductException {
+    public List<Product> getAllProducts() throws RepositoryException {
         List<Product> productList;
         try {
             productList = productRepo.getAll();
         } catch (Exception e) {
-            throw new ProductException(e);
+            throw new RepositoryException(e);
         }
 
         return productList;

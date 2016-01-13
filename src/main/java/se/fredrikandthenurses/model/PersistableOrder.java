@@ -22,9 +22,9 @@ public class PersistableOrder extends AbstractEntity {
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name= "orderId")
     private Collection<OrderRow> orderRowList;
-
+    @Column(nullable = false, unique = true)
     private String orderNumber;
-
+    @Column(nullable = false)
     private Double price;
 
     @Enumerated(EnumType.STRING)

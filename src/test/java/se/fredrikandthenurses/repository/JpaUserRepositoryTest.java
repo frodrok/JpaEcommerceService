@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import se.fredrikandthenurses.exception.RepositoryException;
 import se.fredrikandthenurses.model.OrderRow;
 import se.fredrikandthenurses.model.PersistableOrder;
 import se.fredrikandthenurses.model.Product;
@@ -72,15 +73,10 @@ public class JpaUserRepositoryTest {
         User user2 = new User("fredrik", "password");
 
         userRepo.saveOrUpdate(user1);
-        expectedException.expect(RollbackException.class);
-        expectedException.expectCause(isA(RollbackException.class));
-        expectedException.expectMessage("Error while comitting the transaction");
-
-//        try {dd
-            userRepo.saveOrUpdate(user2);
-//        } catch (RuntimeException e) {
-//            System.out.println(e.getMessage());
-//        }
+        expectedException.expect(RepositoryException.class);
+        userRepo.saveOrUpdate(user2);
     }
+
+
 
 }
