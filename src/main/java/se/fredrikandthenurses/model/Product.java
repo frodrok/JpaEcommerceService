@@ -75,7 +75,6 @@ public class Product extends AbstractEntity {
             return false;
         if (productName != null ? !productName.equals(product.productName) : product.productName != null) return false;
         return productPrice != null ? productPrice.equals(product.productPrice) : product.productPrice == null;
-
     }
 
     @Override

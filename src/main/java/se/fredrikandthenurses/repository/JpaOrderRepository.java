@@ -39,10 +39,8 @@ public class JpaOrderRepository extends AbstractJpaRepository<PersistableOrder> 
 
     }
 
-
     public List<PersistableOrder> getAll(){
         return queryForList("PersistableOrder.getAll");
     }
-
 
 }

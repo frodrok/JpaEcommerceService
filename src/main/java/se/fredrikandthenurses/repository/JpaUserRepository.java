@@ -21,7 +21,6 @@ public class JpaUserRepository extends AbstractJpaRepository <User> implements U
         return query("User.FindByUsername", username);
     }
 
-
     @Override
     public List<User> getAll() {
         return queryForList("User.GetAll");

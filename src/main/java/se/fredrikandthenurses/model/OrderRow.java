@@ -36,7 +36,6 @@ public class OrderRow extends AbstractEntity {
 
         if (product != null ? !product.equals(orderRow.product) : orderRow.product != null) return false;
         return !(amount != null ? !amount.equals(orderRow.amount) : orderRow.amount != null);
-
     }
 
     @Override
@@ -53,10 +52,6 @@ public class OrderRow extends AbstractEntity {
                 ", amount=" + amount +
                  +
                 '}';
-    }
-
-    public OrderRow setOrder(PersistableOrder order) {
-        return this;
     }
 
 }

@@ -17,7 +17,6 @@ import java.util.HashSet;
 public class PersistableOrder extends AbstractEntity {
 
     @ManyToOne
-    @JoinColumn(name= "userId", nullable = false)
     private User user;
 
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)

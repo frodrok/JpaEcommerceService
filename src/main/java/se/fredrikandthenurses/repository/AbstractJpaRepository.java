@@ -51,7 +51,6 @@ public abstract class AbstractJpaRepository<E extends AbstractEntity> implements
         } finally {
             manager.close();
         }
-
         return entity;
     }
 

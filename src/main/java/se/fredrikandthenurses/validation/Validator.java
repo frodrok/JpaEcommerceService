@@ -14,7 +14,6 @@ public class Validator{
 
     public static boolean isValid(Product entity) {
         return(!productNameIsEmpty(entity.getProductName()) && priceIsOk(entity.getProductPrice()) && !productNumberIsEmpty(entity.getProductNumber()));
-
     }
 
     public static boolean isValid(User entity) {
@@ -41,8 +40,6 @@ public class Validator{
     private static boolean passwordIsEmpty(String password){
         return password.trim().length()<1;
     }
-
-
 
     private static boolean orderNumberIsEmpty(String orderNumber){
         return orderNumber.trim().length() <1;
