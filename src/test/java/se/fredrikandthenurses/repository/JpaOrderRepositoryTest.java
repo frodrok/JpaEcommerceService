@@ -28,7 +28,6 @@ public class JpaOrderRepositoryTest {
     private OrderRepository orderRepository;
     private UserRepository userRepository;
     private ProductRepository productRepository;
-
     private Product product;
     private OrderRow orderRow;
     private User user;
@@ -38,11 +37,9 @@ public class JpaOrderRepositoryTest {
     @Before
     public void setup(){
         factory = Persistence.createEntityManagerFactory("lokaldatabas");
-
         orderRepository = new JpaOrderRepository(factory);
         userRepository = new JpaUserRepository(factory);
         productRepository = new JpaProductRepository(factory);
-
         product = new Product("789", "corona", 10.00);
         orderRow =new OrderRow(product, 10);
         user = new User("joanne", "123");
@@ -51,7 +48,6 @@ public class JpaOrderRepositoryTest {
         productRepository.saveOrUpdate(product);
         persistableOrder.addOrderRow(orderRow);
         orderRepository.saveOrUpdate(persistableOrder);
-
     }
 
     @Test

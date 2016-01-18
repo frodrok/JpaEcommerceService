@@ -11,14 +11,14 @@ import java.util.HashSet;
         @NamedQuery(name = "PersistableOrder.FindByUser", query = "SELECT p FROM PersistableOrder p WHERE p.user.id = ?1"),
         @NamedQuery(name = "PersistableOrder.FindByOrderNumber", query = "SELECT p FROM PersistableOrder p Join Fetch p.orderRowList WHERE p.orderNumber = ?1"),
         @NamedQuery(name = "PersistableOrder.FindByStatus", query = "SELECT p FROM PersistableOrder p Join Fetch p.orderRowList WHERE p.orderStatus = ?1"),
-        @NamedQuery(name = "PersistableOrder.FindByMinimumPrice", query = "SELECT p FROM PersistableOrder p JOIN FETCH p.orderRowList where p.price > ?1 "),
+        @NamedQuery(name = "PersistableOrder.FindByMinimumPrice", query = "SELECT p FROM PersistableOrder p where p.price > ?1 "),
         @NamedQuery(name = "PersistableOrder.getAll", query = "SELECT p FROM PersistableOrder p")
 })
 public class PersistableOrder extends AbstractEntity {
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private User user;
-
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name= "orderId")
     private Collection<OrderRow> orderRowList;
@@ -88,11 +88,8 @@ public class PersistableOrder extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         PersistableOrder that = (PersistableOrder) o;
-
         return !(getOrderNumber() != null ? !getOrderNumber().equals(that.getOrderNumber()) : that.getOrderNumber() != null);
-
     }
 
     @Override

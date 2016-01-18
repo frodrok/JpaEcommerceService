@@ -12,6 +12,7 @@ import se.fredrikandthenurses.validation.Validator;
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,69 +30,45 @@ public final class ECommerceService {
         this.productRepo = productRepo;
     }
 
-    public Product addProduct(Product product) throws RepositoryException {
+    public Product saveProduct(Product product) throws RepositoryException {
         Product p;
-        if(Validator.isValid(product)) {
-            try {
-                p = productRepo.saveOrUpdate(product);
-            } catch (PersistenceException e) {
-                throw new RepositoryException(e);
-            }
-        }
-        else{
+        if (Validator.isValid(product)) {
+            p = productRepo.saveOrUpdate(product);
+        } else {
             throw new RepositoryException("Not valid product");
         }
         return p;
     }
 
-    public Product findByProductNumber(String productNumber) throws RepositoryException {
-        Product p;
-        try {
-            p = productRepo.findByProductNumber(productNumber);
-        } catch (Exception e) {
-            throw new RepositoryException(e);
-        }
+    public Product findProductById(Long id) {
+        return productRepo.find(id);
+    }
 
-        return p;
+    public Product findByProductNumber(String productNumber) throws RepositoryException {
+        return productRepo.findByProductNumber(productNumber);
     }
 
     public Product findByProductName(String productName) throws RepositoryException {
-        Product p;
-        try {
-            p = productRepo.findByProductName(productName);
-        } catch (Exception e) {
-            throw new RepositoryException(e);
-        }
-
-        return p;
-
+        return productRepo.findByProductName(productName);
     }
 
     public List<Product> getAllProducts() throws RepositoryException {
-        List<Product> productList;
-        try {
-            productList = productRepo.getAll();
-        } catch (Exception e) {
-            throw new RepositoryException(e);
-        }
-
-        return productList;
+        return productRepo.getAll();
     }
 
-    public User addUser(User user) {
+    public User saveUser(User user) {
         User u;
-
         if (Validator.isValid(user)) {
-            try {
-               u = userRepo.saveOrUpdate(user);
-            } catch (PersistenceException e) {
-                throw new RepositoryException(e);
-            }
+            u = userRepo.saveOrUpdate(user);
+
         } else {
             throw new RepositoryException("Not valid user");
         }
-
         return u;
+    }
+
+    public User findUserById(Long id) {
+        return userRepo.find(id);
     }
 
     public User findUserByUsername(String username) {
@@ -102,27 +79,33 @@ public final class ECommerceService {
         return userRepo.getAll();
     }
 
-    public PersistableOrder addOrder(PersistableOrder persistableOrder) {
+    public PersistableOrder saveOrder(PersistableOrder persistableOrder) {
         PersistableOrder o;
         if (Validator.isValid(persistableOrder)) {
-            try {
-                o = orderRepo.saveOrUpdate(persistableOrder);
-            } catch (PersistenceException e) {
-                throw new RepositoryException(e);
-            }
+            o = orderRepo.saveOrUpdate(persistableOrder);
         } else {
             throw new RepositoryException("Not valid order");
         }
         return o;
     }
 
+    public PersistableOrder findOrderById(Long id) {
+        return orderRepo.find(id);
+    }
+
     public List<PersistableOrder> getAllOrders() {
         return orderRepo.getAll();
     }
 
-    public List<PersistableOrder> findOrdersByUser(User user) {
-        return new ArrayList<>(orderRepo.findByUser(user));
-    }
+    public Collection<PersistableOrder> findOrdersByUser(User user) {
+        Collection<PersistableOrder> orderList;
+        if (Validator.isValid(user)) {
+            orderList = orderRepo.findByUser(user);
+        } else {
+            throw new RepositoryException("Not a valid user");
+        }
+        return orderList;
+}
 
     public List<PersistableOrder> findOrdersByStatus(OrderStatus status) {
         return new ArrayList<>(orderRepo.findOrdersByStatus(status));

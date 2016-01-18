@@ -71,7 +71,6 @@ public class JpaUserRepositoryTest {
     public void shouldNotBeAbleToAddTwoUsersWithSameUsername() {
         User user1 = new User("fredrik", "password");
         User user2 = new User("fredrik", "password");
-
         userRepo.saveOrUpdate(user1);
         expectedException.expect(RepositoryException.class);
         userRepo.saveOrUpdate(user2);

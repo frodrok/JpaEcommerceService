@@ -1,6 +1,5 @@
 package se.fredrikandthenurses.service;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,7 +7,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.fredrikandthenurses.model.Product;
 import se.fredrikandthenurses.repository.OrderRepository;
@@ -55,51 +53,37 @@ public class ECommerceProductTest {
 
     @Test
     public void productShouldBeAddedOrUpdated() throws Exception {
-        service.addProduct(product);
+        service.saveProduct(product);
         verify(productRepositoryMock, times(1)).saveOrUpdate(product);
     }
 
     @Test
     public void productShouldBeRetrievableByProductNumber() throws Exception {
-        service.addProduct(product);
-
+        service.saveProduct(product);
         when(productRepositoryMock.findByProductNumber(product.getProductNumber())).thenReturn(product);
-
         assertThat(service.findByProductNumber(product.getProductNumber()), equalTo(product));
-
         verify(productRepositoryMock, times(1)).saveOrUpdate(product);
         verify(productRepositoryMock, times(1)).findByProductNumber(product.getProductNumber());
     }
 
     @Test
     public void productShouldBeRetrievableByProductName() throws Exception {
-
-        service.addProduct(product);
-
+        service.saveProduct(product);
         when(productRepositoryMock.findByProductName(product.getProductName())).thenReturn(product);
-
         assertThat(service.findByProductName(product.getProductName()), equalTo(product));
-
         verify(productRepositoryMock, times(1)).saveOrUpdate(product);
         verify(productRepositoryMock, times(1)).findByProductName(product.getProductName());
-
     }
 
     @Test
     public void addedProductShouldBeInGetAllList() throws Exception {
-
-        service.addProduct(product);
-
+        service.saveProduct(product);
         List<Product> productList = new ArrayList<>();
         productList.add(product);
         when(productRepositoryMock.getAll()).thenReturn(productList);
-
         assertThat(service.getAllProducts(), contains(product));
-
         verify(productRepositoryMock, times(1)).getAll();
         verify(productRepositoryMock, times(1)).saveOrUpdate(product);
     }
-
-
 
 }

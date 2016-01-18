@@ -63,64 +63,51 @@ public class ECommerceOrderTest {
 
     @Test
     public void orderShouldBeAddedOrUpdated() {
-        service.addOrder(persistableOrder);
+        service.saveOrder(persistableOrder);
         verify(orderRepositoryMock).saveOrUpdate(persistableOrder);
     }
 
     @Test
     public void orderShouldBeRetrievableByOrderNumber() throws Exception {
-        service.addOrder(persistableOrder);
+        service.saveOrder(persistableOrder);
         verify(orderRepositoryMock).saveOrUpdate(persistableOrder);
-
         when(orderRepositoryMock.findByOrderNumber("1001")).thenReturn(persistableOrder);
-
         assertThat(service.findByOrderNumber("1001"), equalTo(persistableOrder));
         verify(orderRepositoryMock,times(1)).findByOrderNumber("1001");
     }
 
     @Test
     public void orderShouldBeRetrievableByUser() {
-        service.addOrder(persistableOrder);
+//        vi testar bara verify
+        List<PersistableOrder> orderList = new ArrayList<>();
+        service.saveOrder(persistableOrder);
+        orderList.add(persistableOrder);
         verify(orderRepositoryMock).saveOrUpdate(persistableOrder);
-
-        user.addOrder(persistableOrder);
-
-        when(orderRepositoryMock.findByUser(user)).thenReturn(user.getPersistableOrderList());
-
-        assertThat(service.findOrdersByUser(user), contains(persistableOrder));
+        when(orderRepositoryMock.findByUser(user)).thenReturn(orderList);
+        assertThat(service.findOrdersByUser(user), equalTo(orderList));
         verify(orderRepositoryMock, times(1)).findByUser(user);
     }
 
     @Test
     public void orderShouldBeRetrievableByStatus() {
-        service.addOrder(persistableOrder);
+        service.saveOrder(persistableOrder);
         verify(orderRepositoryMock).saveOrUpdate(persistableOrder);
-
         persistableOrder.setStatusShipped();
-
         List<PersistableOrder> shippedPersistableOrders = new ArrayList<>();
         shippedPersistableOrders.add(persistableOrder);
-
         when(orderRepositoryMock.findOrdersByStatus(persistableOrder.getStatus())).thenReturn(shippedPersistableOrders);
-
         assertThat(service.findOrdersByStatus(persistableOrder.getStatus()), contains(persistableOrder));
     }
 
     @Test
     public void ordersShouldBeRetrievableByMinimumPrice(){
         double price = 100;
-        service.addOrder(persistableOrder);
-
+        service.saveOrder(persistableOrder);
         List<PersistableOrder> persistableOrders = new ArrayList<>();
         persistableOrders.add(persistableOrder);
         verify(orderRepositoryMock).saveOrUpdate(persistableOrder);
-
         when(orderRepositoryMock.findByMinimumPrice(price)).thenReturn(persistableOrders);
-
         assertThat(service.findOrdersByMinimumPrice(price), contains(persistableOrder));
-
         verify(orderRepositoryMock, times(1)).findByMinimumPrice(price);
-
-
     }
 }

@@ -19,7 +19,6 @@ public class User extends AbstractEntity {
     private String password;
     @Column
     private boolean active;
-
     @OneToMany(mappedBy = "user")
     private Collection<PersistableOrder> persistableOrderList;
 
@@ -56,18 +55,10 @@ public class User extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         User user = (User) o;
-
         if (active != user.active) return false;
         if (username != null ? !username.equalsIgnoreCase(user.username) : user.username != null) return false;
         return password != null ? password.equals(user.password) : user.password == null;
-
-    }
-
-    public User addOrder(PersistableOrder persistableOrder) {
-        persistableOrderList.add(persistableOrder);
-        return this;
     }
 
     @Override

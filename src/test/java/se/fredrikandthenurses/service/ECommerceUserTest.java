@@ -7,9 +7,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import se.fredrikandthenurses.model.Product;
 import se.fredrikandthenurses.model.User;
 import se.fredrikandthenurses.repository.OrderRepository;
 import se.fredrikandthenurses.repository.ProductRepository;
@@ -56,34 +54,27 @@ public class ECommerceUserTest {
 
     @Test
     public void userShouldBeAddedOrUpdated(){
-        service.addUser(user);
-
+        service.saveUser(user);
         verify(userRepositoryMock, times(1)).saveOrUpdate(user);
-
     }
 
     @Test
     public void userShouldBeRetrievableByUsername() {
-        service.addUser(user);
+        service.saveUser(user);
         verify(userRepositoryMock, times(1)).saveOrUpdate(user);
-
         when(userRepositoryMock.findByUsername(user.getUsername())).thenReturn(user);
-
         assertThat(service.findUserByUsername(user.getUsername()), equalTo(user));
         verify(userRepositoryMock, times(1)).findByUsername(user.getUsername());
     }
 
     @Test
     public void addedUserShouldBeInGetAllList() {
-        service.addUser(user);
+        service.saveUser(user);
         verify(userRepositoryMock, times(1)).saveOrUpdate(user);
-
         List<User> userList = new ArrayList<>();
         userList.add(user);
         when(userRepositoryMock.getAll()).thenReturn(userList);
-
         assertThat(service.getAllUsers(), contains(user));
-
         verify(userRepositoryMock, times(1)).getAll();
     }
 }
