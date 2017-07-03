@@ -22,9 +22,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.*;
 
-/**
- * Created by joanne on 22/12/15.
- */
 public class JpaUserRepositoryTest {
 
     @Rule

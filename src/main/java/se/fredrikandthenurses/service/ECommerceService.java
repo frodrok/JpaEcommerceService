@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by joanne on 21/12/15.
- */
 public final class ECommerceService {
 
     private final OrderRepository orderRepo;

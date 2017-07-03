@@ -23,10 +23,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by TheYellowBelliedMarmot on 2015-12-21.
- */
-
 @RunWith(MockitoJUnitRunner.class)
 public class ECommerceUserTest {
 

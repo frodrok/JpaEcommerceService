@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by joanne on 21/12/15.
- */
 public class ProductTest {
 
     @Test

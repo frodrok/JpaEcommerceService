@@ -6,12 +6,9 @@ import se.fredrikandthenurses.service.ECommerceService;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- * Created by joanne on 18/01/16.
- */
 public class Main {
 
-    public static EntityManagerFactory factory =Persistence.createEntityManagerFactory("lokaldatabas");
+    public static EntityManagerFactory factory = Persistence.createEntityManagerFactory("lokaldatabas");
 
     public static void main(String[] args) {
 

@@ -17,9 +17,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.*;
 
-/**
- * Created by joanne on 22/12/15.
- */
 public class JpaOrderRepositoryTest {
 
     @Rule

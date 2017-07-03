@@ -15,9 +15,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-/**
- * Created by TheYellowBelliedMarmot on 2015-12-22.
- */
 public class JpaProductRepositoryTest {
 
     @Rule

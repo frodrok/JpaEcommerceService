@@ -9,9 +9,6 @@ import javax.persistence.TypedQuery;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by joanne on 22/12/15.
- */
 public class JpaOrderRepository extends AbstractJpaRepository<PersistableOrder> implements OrderRepository {
 
     public JpaOrderRepository(EntityManagerFactory emf) {

@@ -5,9 +5,6 @@ import se.fredrikandthenurses.model.*;
 
 import java.util.Collection;
 
-/**
- * Created by TheYellowBelliedMarmot on 2016-01-13.
- */
 public class Validator{
 
     private Validator(){}
